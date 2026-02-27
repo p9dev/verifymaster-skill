@@ -1,26 +1,26 @@
 ---
 name: VerifyMaster
-description: 对文本、URL、图片、视频、PDF、音频进行事实核查与可信度评估
+description: Fact-checking and credibility assessment for text, URLs, images, video, PDF, and audio
 version: 1.0.0
 env:
   - name: VERIFYMASTER_BASE_URL
-    description: API 根地址，如 https://api.verifymaster.info（可选，默认生产）
+    description: API base URL, e.g. https://api.verifymaster.info
   - name: VERIFYMASTER_TOKEN
-    description: JWT token，通过 POST /v1/auth/login 获取
+    description: JWT token obtained via POST /v1/auth/login
 ---
 
 # Instruction
 
-当用户需要**验证一段文字、链接、图片、视频或 PDF 的真伪或可信度**时，使用本技能调用 VerifyMaster API。
+Use this skill to call the VerifyMaster API when the user wants to **verify the accuracy or credibility of text, a link, an image, a video, or a PDF**.
 
-**典型流程**：
-1. 使用 `login` 获取 token（若尚未有 token）。
-2. 使用 `getQuota` 或 `getAccountUsage` 查看余额与配额。
-3. 使用 `submitVerification` 提交待验证内容（type: text | url | image | video | pdf | audio，content: 字符串或 URL）。
-4. 若返回 status 为 processing，则轮询 `getTaskStatus` 直至 status 为 completed 或 failed。
-5. 使用 `getQueryResult` 获取完整查证结果。
+**Typical flow**:
+1. Use `login` to get a token (if you do not have one yet).
+2. Use `getQuota` or `getAccountUsage` to check balance and quota.
+3. Use `submitVerification` to submit content (type: text | url | image | video | pdf | audio; content: string or URL).
+4. If the response status is processing, poll `getTaskStatus` until status is completed or failed.
+5. Use `getQueryResult` to get the full verification result.
 
-**错误处理**：若响应中有 `hint` 字段，可根据提示修正参数后重试。
+**Error handling**: If the response includes a `hint` field, correct parameters according to the hint and retry.
 
 ---
 
@@ -99,6 +99,6 @@ env:
 }
 ```
 
-**API 根地址**：环境变量 `VERIFYMASTER_BASE_URL` 或默认 `https://api.verifymaster.info`。  
-**认证**：除 login 外，请求头需带 `Authorization: Bearer <VERIFYMASTER_TOKEN>`。  
-**OpenAPI 规范**：`GET {base}/v1/openapi.json`；**AI 发现**：`GET {base}/.well-known/ai-plugin.json`。
+**API base URL**: Environment variable `VERIFYMASTER_BASE_URL` or default `https://api.verifymaster.info`.  
+**Authentication**: For all requests except login, send header `Authorization: Bearer <VERIFYMASTER_TOKEN>`.  
+**OpenAPI spec**: `GET {base}/v1/openapi.json`; **AI discovery**: `GET {base}/.well-known/ai-plugin.json`.
